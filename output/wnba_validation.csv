@@ -1,0 +1,5 @@
+check,value,threshold,passed
+WNBA 2024 FGA matches independent play-by-play (relative),0.000030525030525030525,0.002,true
+WNBA 2024 FGM matches independent play-by-play (relative),0.0,0.002,true
+WNBA 2024 3PM matches independent play-by-play (relative),0.0,0.002,true
+worst WNBA decile calibration gap (own-season fits),0.015019981940289195,0.02,true
