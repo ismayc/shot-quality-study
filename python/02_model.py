@@ -283,7 +283,12 @@ def main() -> int:
                             line={"dash": "dash"}))
     f1.update_layout(title="Calibration: predicted vs actual make rate by decile",
                      xaxis_title="mean predicted P(make)",
-                     yaxis_title="actual make rate", template="plotly_white")
+                     yaxis_title="actual make rate", template="plotly_white",
+                     # bottom-right is always empty under a y=x diagonal, so
+                     # the legend can never collide with the traces there
+                     legend=dict(x=0.98, y=0.04, xanchor="right",
+                                 yanchor="bottom",
+                                 bgcolor="rgba(255,255,255,0.75)"))
     f1.write_html(FIG / "fig1_calibration_py.html", include_plotlyjs="cdn")
 
     big = players.filter(pl.col("fga") >= MIN_FGA_TABLE)
