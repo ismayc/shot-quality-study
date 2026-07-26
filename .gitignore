@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+.~lock.*#
+# Extracted CSVs: the .tar.xz originals are committed; tar xf regenerates.
+# The G League CSV has no archive twin and stays committed.
+data/shotdetail_202*.csv
+data/nbastats_2024.csv
+data/wnba_shotdetail_202*.csv
+data/wnba_nbastats_2024.csv

@@ -1,6 +1,6 @@
 # Unit tests for shot-quality-study/R/functions.R
 
-source(file.path(REPO, "shot-quality-study", "R", "functions.R"))
+source(file.path(REPO, "R", "functions.R"))
 
 test_that("action family: first keyword match wins, in definition order", {
   cases <- c(
