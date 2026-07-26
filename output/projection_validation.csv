@@ -1,0 +1,7 @@
+check,value,threshold,passed
+"EB beats naive carry-forward, 2023-24 to 2024-25 (MAE ratio)",0.88564941511999,1.0,true
+"EB beats or ties diet-only, 2023-24 to 2024-25 (MAE ratio)",0.8437572071580396,1.0,true
+"EB beats naive carry-forward, 2024-25 to 2025-26 (MAE ratio)",0.90025064798471,1.0,true
+"EB beats or ties diet-only, 2024-25 to 2025-26 (MAE ratio)",0.8489949224304444,1.0,true
+true-skill variance tau2 > 0 in both source seasons (negated),-45.272311357263774,0.0,true
+"shrinkage weights strictly inside (0, 1) (max weight)",0.8970300038107866,0.999999999,true

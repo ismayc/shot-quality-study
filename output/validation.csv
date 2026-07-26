@@ -1,0 +1,6 @@
+check,value,threshold,passed
+FGA matches play-by-play count (relative),0.00001828947669234814,0.002,true
+FGM matches play-by-play count (relative),0.000028917892463997223,0.002,true
+3PM matches play-by-play count (relative),0.00003166561114629513,0.002,true
+max decile |predicted - actual| make rate,0.009783367897980288,0.01,true
+league mean xPTS equals mean actual PTS,8.767825232069981e-6,0.005,true
