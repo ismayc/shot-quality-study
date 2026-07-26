@@ -4,7 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pricing every shot, and finding out which shooting skills are real</title>
-
+<meta name="description" content="Reconciled, validated basketball analytics on public data: part of the basketball-data-science family.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏀</text></svg>">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Basketball Data Science">
+<meta property="og:title" content="Pricing every shot, and finding out which shooting skills are real">
+<meta property="og:description" content="Reconciled, validated basketball analytics on public data: part of the basketball-data-science family.">
+<meta property="og:url" content="https://ismayc.github.io/shot-quality-study/">
+<meta property="og:image" content="https://ismayc.github.io/basketball-data-science/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ismayc.github.io/basketball-data-science/og-image.png">
 <style>
 :root {
   --ink: #1a1d24; --ink-2: #4a4f5c; --ink-3: #767b88;
@@ -99,13 +110,13 @@ details.terms li { margin: .3rem 0; color: var(--ink-2); }
 <main>
 <h1>Pricing every shot, and finding out which shooting skills are real</h1>
 <p>A box score tells you what went in. It cannot tell you whether the shooter
-was good or the shots were easy, and that distinction is worth real money:
-it is the difference between a cold shooter and a broken shot diet, between
+was good or the shots were easy. That distinction is worth real money. It
+is the difference between a cold shooter and a broken shot diet, between
 a breakout and a hot streak. This study prices all 218,701 field-goal
-attempts of 2023-24 with a logistic <abbr title="The model's probability that a given shot goes in, estimated from location and shot type; the per-shot building block behind xPPS and xPTS.">xMake</abbr> model (location, distance,
-angle, and nine action families, with the game clock deliberately left
-out) and then follows the consequences across three NBA seasons, the
-G League, and the WNBA.</p>
+attempts of 2023-24 with a logistic <abbr title="The model's probability that a given shot goes in, estimated from location and shot type; the per-shot building block behind xPPS and xPTS.">xMake</abbr> model built from location,
+distance, angle, and nine action families, with the game clock
+deliberately left out. Then it follows the consequences across three NBA
+seasons, the G League, and the WNBA.</p>
 <details class="terms"><summary>Terms used in this analysis</summary><ul><li><strong>xPPS</strong>: Expected points per shot - the model's fair price of a shot diet: what an average shooter would score on the same attempts, judged from location and shot type alone, before knowing what went in.</li><li><strong>xMake</strong>: The model's probability that a given shot goes in, estimated from location and shot type; the per-shot building block behind xPPS and xPTS.</li><li><strong>shot-making</strong>: Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.</li><li><strong>eFG%</strong>: Effective field-goal percentage: field-goal percentage with made threes counted 1.5x, putting twos and threes on one points scale.</li><li><strong>2-for-1</strong>: Shooting early with 25-36 seconds left in a period so your team gets two possessions to the opponent's one before the buzzer.</li><li><strong>decile calibration</strong>: Split shots into ten bins by predicted make probability and compare predicted vs actual rates per bin; the reported number is the worst bin's gap.</li><li><strong>empirical Bayes</strong>: Estimate the spread of true skill across the league from the data, then pull each individual's noisy estimate toward the league mean in proportion to its noise.</li><li><strong>shrinkage weight</strong>: The fraction of an observed number that survives empirical-Bayes regression: 1 means fully trusted, 0 means replaced by the league mean.</li><li><strong>corner three</strong>: A three-pointer from the corner, where the NBA line is roughly 3 ft closer than the arc - the geometry discount that makes it the cheapest three.</li></ul></details>
 <p>Nothing downstream matters if the pricing is wrong, so the first figure is
 the least glamorous and most important one.</p>
@@ -113,10 +124,10 @@ the least glamorous and most important one.</p>
 <p>With every shot priced, player skill splits cleanly in two. <strong>Selection</strong>
 (<abbr title="Expected points per shot - the model's fair price of a shot diet: what an average shooter would score on the same attempts, judged from location and shot type alone, before knowing what went in.">xPPS</abbr>) is the value of the shots a player chooses; <strong>making</strong> is
 conversion above what those shots should yield. The two skills have
-different rosters, and that is the decomposition's whole point: the
-make-above-expected list is Jokić, Curry, Dončić (players who convert
-hard shots), while the best-diet list is rim-runners like Gafford, whose
-value is standing in the right place. Box-score efficiency mixes the two;
+different rosters, and that is the decomposition's whole point. The
+make-above-expected list is Jokić, Curry, Dončić: players who convert
+hard shots. The best-diet list is rim-runners like Gafford, whose value
+is standing in the right place. Box-score efficiency mixes the two;
 this separates them.</p>
 <figure class="figure-card"><iframe src="figures/fig2_selection_vs_making_py.html" loading="lazy" title="Selection vs making"></iframe><figcaption>Every qualifying player placed by shot selection (x) and <abbr title="Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.">shot-making</abbr> (y). The figure that makes the decomposition concrete: the upper region is shot-makers, the right region is diet merchants, and the near-empty upper-right is the superstar corner. Two different skills, two different leaderboards, one chart.</figcaption></figure>
 <p>The model's most quotable tactical result comes from what was left out of
@@ -128,10 +139,10 @@ seconds, meanwhile, costs almost nothing (~−0.8 per 100), upgrading the
 sibling play-by-play study's <abbr title="Effective field-goal percentage: field-goal percentage with made threes counted 1.5x, putting twos and threes on one points scale.">eFG</abbr>-proxy finding with a real per-shot
 price.</p>
 <p>Then comes the question that turns a descriptive model into a projection
-tool: <strong>which of these skills repeats?</strong> Scoring each season with its own
-refit model so level drift cannot masquerade as skill, shot selection
-correlates at r ≈ .91/.87 year over year, while <abbr title="Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.">shot-making</abbr> correlates at
-only r ≈ .60/.59. And raw points per shot persists no better than making,
+tool: <strong>which of these skills repeats?</strong> Each season is scored with its
+own refit model, so level drift cannot masquerade as skill. Shot
+selection correlates at r ≈ .91/.87 year over year. <abbr title="Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.">Shot-making</abbr>
+correlates at only r ≈ .60/.59. And raw points per shot persists no better than making,
 because box-score efficiency inherits all of making's noise.</p>
 <figure class="figure-card"><iframe src="figures/fig3_persistence_py.html" loading="lazy" title="Persistence"></iframe><figcaption><abbr title="Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.">Shot-making</abbr> in 2023-24 versus 2024-25, player by player. The study's most consequential scatter: the cloud is wide because making only half-repeats (r ≈ .60), while the equivalent selection plot is a tight diagonal (r ≈ .91). This single contrast dictates the projection rule: trust the diet, regress the making.</figcaption></figure>
 <p>The persistence finding earns its keep by becoming a rule.
