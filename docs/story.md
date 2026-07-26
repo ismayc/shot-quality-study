@@ -1,13 +1,13 @@
 # Pricing every shot, and finding out which shooting skills are real
 
 A box score tells you what went in. It cannot tell you whether the shooter
-was good or the shots were easy, and that distinction is worth real money:
-it is the difference between a cold shooter and a broken shot diet, between
+was good or the shots were easy. That distinction is worth real money. It
+is the difference between a cold shooter and a broken shot diet, between
 a breakout and a hot streak. This study prices all 218,701 field-goal
-attempts of 2023-24 with a logistic xMake model (location, distance,
-angle, and nine action families, with the game clock deliberately left
-out) and then follows the consequences across three NBA seasons, the
-G League, and the WNBA.
+attempts of 2023-24 with a logistic xMake model built from location,
+distance, angle, and nine action families, with the game clock
+deliberately left out. Then it follows the consequences across three NBA
+seasons, the G League, and the WNBA.
 
 Nothing downstream matters if the pricing is wrong, so the first figure is
 the least glamorous and most important one.
@@ -17,10 +17,10 @@ the least glamorous and most important one.
 With every shot priced, player skill splits cleanly in two. **Selection**
 (xPPS) is the value of the shots a player chooses; **making** is
 conversion above what those shots should yield. The two skills have
-different rosters, and that is the decomposition's whole point: the
-make-above-expected list is Jokić, Curry, Dončić (players who convert
-hard shots), while the best-diet list is rim-runners like Gafford, whose
-value is standing in the right place. Box-score efficiency mixes the two;
+different rosters, and that is the decomposition's whole point. The
+make-above-expected list is Jokić, Curry, Dončić: players who convert
+hard shots. The best-diet list is rim-runners like Gafford, whose value
+is standing in the right place. Box-score efficiency mixes the two;
 this separates them.
 
 {{fig:fig2_selection_vs_making_py|Every qualifying player placed by shot selection (x) and shot-making (y). The figure that makes the decomposition concrete: the upper region is shot-makers, the right region is diet merchants, and the near-empty upper-right is the superstar corner. Two different skills, two different leaderboards, one chart.}}
@@ -35,10 +35,10 @@ sibling play-by-play study's eFG-proxy finding with a real per-shot
 price.
 
 Then comes the question that turns a descriptive model into a projection
-tool: **which of these skills repeats?** Scoring each season with its own
-refit model so level drift cannot masquerade as skill, shot selection
-correlates at r ≈ .91/.87 year over year, while shot-making correlates at
-only r ≈ .60/.59. And raw points per shot persists no better than making,
+tool: **which of these skills repeats?** Each season is scored with its
+own refit model, so level drift cannot masquerade as skill. Shot
+selection correlates at r ≈ .91/.87 year over year. Shot-making
+correlates at only r ≈ .60/.59. And raw points per shot persists no better than making,
 because box-score efficiency inherits all of making's noise.
 
 {{fig:fig3_persistence_py|Shot-making in 2023-24 versus 2024-25, player by player. The study's most consequential scatter: the cloud is wide because making only half-repeats (r ≈ .60), while the equivalent selection plot is a tight diagonal (r ≈ .91). This single contrast dictates the projection rule: trust the diet, regress the making.}}
