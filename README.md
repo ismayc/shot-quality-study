@@ -10,7 +10,7 @@ the public feed caps out at location + shot type, and this study is explicit
 about sitting at that ceiling.
 
 <!-- terms -->
-> **Terms used in this analysis.** Dotted-underlined terms anywhere below repeat these definitions on hover ([full glossary](../docs/glossary.md)).
+> **Terms used in this analysis.** Dotted-underlined terms anywhere below repeat these definitions on hover ([full glossary](https://github.com/ismayc/basketball-data-science/blob/main/docs/glossary.md)).
 >
 > - **PPS** — Points per shot: total points on field-goal attempts divided by attempts. Free throws excluded.
 > - **xPPS** — Expected points per shot - the model's fair price of a shot diet: what an average shooter would score on the same attempts, judged from location and shot type alone, before knowing what went in.
@@ -35,7 +35,7 @@ about sitting at that ceiling.
 | Source | What | Size |
 |---|---|---|
 | [shufinskiy/nba_data](https://github.com/shufinskiy/nba_data) `shotdetail_2023` | every ShotChartDetail row of 2023-24: x/y location, zone, action type, clock, make/miss | 218,701 shots |
-| `../lineup-valuation-study/data/pbp_bulk/nbastats_2023.csv` | independent play-by-play feed | cross-dataset validation only |
+| `../lineup-valuation-study/data/pbp_bulk/nbastats_2023.csv` (sibling checkout) | independent play-by-play feed | cross-dataset validation only |
 
 One bulk download (`python/01_harvest_shots.py`), no per-game API calls.
 
@@ -82,7 +82,7 @@ computed the <abbr title="Actual minus expected points per 100 shots: conversion
 sequential `summarise()` had already redefined `xpts` as its group sum —
 silently turning the SE into `sd(points)`. Sums, means, and rankings all
 still matched; only the two-implementation comparison surfaced it. Details
-in `../docs/analysis-audit.md`.
+in [analysis-audit](https://github.com/ismayc/basketball-data-science/blob/main/docs/analysis-audit.md).
 
 ## Findings
 
@@ -140,7 +140,7 @@ made less often). The old <abbr title="Effective field-goal percentage: field-go
 
 ### The 2-for-1 window, re-tested with a real shot-quality model
 
-`../playbyplay-study` concluded the <abbr title="Shooting early with 25-36 seconds left in a period so your team gets two possessions to the opponent's one before the buzzer.">2-for-1</abbr> adds a possession at no
+[playbyplay-study](https://github.com/ismayc/playbyplay-study) concluded the <abbr title="Shooting early with 25-36 seconds left in a period so your team gets two possessions to the opponent's one before the buzzer.">2-for-1</abbr> adds a possession at no
 shot-quality cost — measured there with an <abbr title="Effective field-goal percentage: field-goal percentage with made threes counted 1.5x, putting twos and threes on one points scale.">eFG</abbr> proxy. This model upgrades
 that claim: shots launched in the 25-36s window price at 1.089
 <abbr title="Expected points per shot - the model's fair price of a shot diet: what an average shooter would score on the same attempts, judged from location and shot type alone, before knowing what went in.">xPPS</abbr> vs 1.097 in normal play — a selection cost of only
