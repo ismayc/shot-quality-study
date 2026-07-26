@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pricing every shot — and finding out which shooting skills are real</title>
+<title>Pricing every shot, and finding out which shooting skills are real</title>
 
 <style>
 :root {
@@ -96,16 +96,16 @@ details.terms li { margin: .3rem 0; color: var(--ink-2); }
   <a href="https://github.com/ismayc/basketball-data-science">GitHub</a>
 </div></header>
 <main>
-<h1>Pricing every shot — and finding out which shooting skills are real</h1>
+<h1>Pricing every shot, and finding out which shooting skills are real</h1>
 <p>A box score tells you what went in. It cannot tell you whether the shooter
 was good or the shots were easy, and that distinction is worth real money:
 it is the difference between a cold shooter and a broken shot diet, between
 a breakout and a hot streak. This study prices all 218,701 field-goal
-attempts of 2023-24 with a logistic <abbr title="The model's probability that a given shot goes in, estimated from location and shot type; the per-shot building block behind xPPS and xPTS.">xMake</abbr> model — location, distance,
+attempts of 2023-24 with a logistic <abbr title="The model's probability that a given shot goes in, estimated from location and shot type; the per-shot building block behind xPPS and xPTS.">xMake</abbr> model (location, distance,
 angle, and nine action families, with the game clock deliberately left
-out — and then follows the consequences across three NBA seasons, the
+out) and then follows the consequences across three NBA seasons, the
 G League, and the WNBA.</p>
-<details class="terms"><summary>Terms used in this analysis</summary><ul><li><strong>xPPS</strong> — Expected points per shot - the model's fair price of a shot diet: what an average shooter would score on the same attempts, judged from location and shot type alone, before knowing what went in.</li><li><strong>xMake</strong> — The model's probability that a given shot goes in, estimated from location and shot type; the per-shot building block behind xPPS and xPTS.</li><li><strong>shot-making</strong> — Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.</li><li><strong>eFG%</strong> — Effective field-goal percentage: field-goal percentage with made threes counted 1.5x, putting twos and threes on one points scale.</li><li><strong>2-for-1</strong> — Shooting early with 25-36 seconds left in a period so your team gets two possessions to the opponent's one before the buzzer.</li><li><strong>decile calibration</strong> — Split shots into ten bins by predicted make probability and compare predicted vs actual rates per bin; the reported number is the worst bin's gap.</li><li><strong>empirical Bayes</strong> — Estimate the spread of true skill across the league from the data, then pull each individual's noisy estimate toward the league mean in proportion to its noise.</li><li><strong>shrinkage weight</strong> — The fraction of an observed number that survives empirical-Bayes regression: 1 means fully trusted, 0 means replaced by the league mean.</li><li><strong>corner three</strong> — A three-pointer from the corner, where the NBA line is roughly 3 ft closer than the arc - the geometry discount that makes it the cheapest three.</li></ul></details>
+<details class="terms"><summary>Terms used in this analysis</summary><ul><li><strong>xPPS</strong>: Expected points per shot - the model's fair price of a shot diet: what an average shooter would score on the same attempts, judged from location and shot type alone, before knowing what went in.</li><li><strong>xMake</strong>: The model's probability that a given shot goes in, estimated from location and shot type; the per-shot building block behind xPPS and xPTS.</li><li><strong>shot-making</strong>: Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.</li><li><strong>eFG%</strong>: Effective field-goal percentage: field-goal percentage with made threes counted 1.5x, putting twos and threes on one points scale.</li><li><strong>2-for-1</strong>: Shooting early with 25-36 seconds left in a period so your team gets two possessions to the opponent's one before the buzzer.</li><li><strong>decile calibration</strong>: Split shots into ten bins by predicted make probability and compare predicted vs actual rates per bin; the reported number is the worst bin's gap.</li><li><strong>empirical Bayes</strong>: Estimate the spread of true skill across the league from the data, then pull each individual's noisy estimate toward the league mean in proportion to its noise.</li><li><strong>shrinkage weight</strong>: The fraction of an observed number that survives empirical-Bayes regression: 1 means fully trusted, 0 means replaced by the league mean.</li><li><strong>corner three</strong>: A three-pointer from the corner, where the NBA line is roughly 3 ft closer than the arc - the geometry discount that makes it the cheapest three.</li></ul></details>
 <p>Nothing downstream matters if the pricing is wrong, so the first figure is
 the least glamorous and most important one.</p>
 <figure class="figure-card"><iframe src="figures/fig1_calibration_py.html" loading="lazy" title="Calibration"></iframe><figcaption>Predicted versus actual make rate by prediction <abbr title="Split shots into ten bins by predicted make probability and compare predicted vs actual rates per bin; the reported number is the worst bin's gap.">decile</abbr>. The license for everything else on this page: the model's prices match reality within a point at the worst <abbr title="Split shots into ten bins by predicted make probability and compare predicted vs actual rates per bin; the reported number is the worst bin's gap.">decile</abbr>, and the same calibration holds on two later seasons the model never saw (worst out-of-season gap 0.014). An uncalibrated pricer would make every following chart meaningless.</figcaption></figure>
@@ -113,8 +113,8 @@ the least glamorous and most important one.</p>
 (<abbr title="Expected points per shot - the model's fair price of a shot diet: what an average shooter would score on the same attempts, judged from location and shot type alone, before knowing what went in.">xPPS</abbr>) is the value of the shots a player chooses; <strong>making</strong> is
 conversion above what those shots should yield. The two skills have
 different rosters, and that is the decomposition's whole point: the
-make-above-expected list is Jokić, Curry, Dončić — players who convert
-hard shots — while the best-diet list is rim-runners like Gafford, whose
+make-above-expected list is Jokić, Curry, Dončić (players who convert
+hard shots), while the best-diet list is rim-runners like Gafford, whose
 value is standing in the right place. Box-score efficiency mixes the two;
 this separates them.</p>
 <figure class="figure-card"><iframe src="figures/fig2_selection_vs_making_py.html" loading="lazy" title="Selection vs making"></iframe><figcaption>Every qualifying player placed by shot selection (x) and <abbr title="Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.">shot-making</abbr> (y). The figure that makes the decomposition concrete: the upper region is shot-makers, the right region is diet merchants, and the near-empty upper-right is the superstar corner. Two different skills, two different leaderboards, one chart.</figcaption></figure>
@@ -122,36 +122,37 @@ this separates them.</p>
 it. Because the clock is not a feature, end-of-period effects appear in
 the residuals, where they decompose: final-four-second heaves are worse
 shots (−17 expected points per 100 by selection) <em>and</em> worse-executed
-shots (a further −22 per 100) — while the <abbr title="Shooting early with 25-36 seconds left in a period so your team gets two possessions to the opponent's one before the buzzer.">2-for-1</abbr> launch window at 25–36
-seconds costs almost nothing (~−0.8 per 100), upgrading the sibling
-play-by-play study's <abbr title="Effective field-goal percentage: field-goal percentage with made threes counted 1.5x, putting twos and threes on one points scale.">eFG</abbr>-proxy finding with a real per-shot price.</p>
+shots (a further −22 per 100). The <abbr title="Shooting early with 25-36 seconds left in a period so your team gets two possessions to the opponent's one before the buzzer.">2-for-1</abbr> launch window at 25–36
+seconds, meanwhile, costs almost nothing (~−0.8 per 100), upgrading the
+sibling play-by-play study's <abbr title="Effective field-goal percentage: field-goal percentage with made threes counted 1.5x, putting twos and threes on one points scale.">eFG</abbr>-proxy finding with a real per-shot
+price.</p>
 <p>Then comes the question that turns a descriptive model into a projection
 tool: <strong>which of these skills repeats?</strong> Scoring each season with its own
 refit model so level drift cannot masquerade as skill, shot selection
 correlates at r ≈ .91/.87 year over year, while <abbr title="Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.">shot-making</abbr> correlates at
-only r ≈ .60/.59 — and raw points per shot persists no better than making,
+only r ≈ .60/.59. And raw points per shot persists no better than making,
 because box-score efficiency inherits all of making's noise.</p>
-<figure class="figure-card"><iframe src="figures/fig3_persistence_py.html" loading="lazy" title="Persistence"></iframe><figcaption><abbr title="Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.">Shot-making</abbr> in 2023-24 versus 2024-25, player by player. The study's most consequential scatter: the cloud is wide because making only half-repeats (r ≈ .60), while the equivalent selection plot is a tight diagonal (r ≈ .91). This single contrast dictates the projection rule — trust the diet, regress the making.</figcaption></figure>
+<figure class="figure-card"><iframe src="figures/fig3_persistence_py.html" loading="lazy" title="Persistence"></iframe><figcaption><abbr title="Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.">Shot-making</abbr> in 2023-24 versus 2024-25, player by player. The study's most consequential scatter: the cloud is wide because making only half-repeats (r ≈ .60), while the equivalent selection plot is a tight diagonal (r ≈ .91). This single contrast dictates the projection rule: trust the diet, regress the making.</figcaption></figure>
 <p>The persistence finding earns its keep by becoming a rule.
 An <abbr title="Estimate the spread of true skill across the league from the data, then pull each individual's noisy estimate toward the league mean in proportion to its noise.">empirical-Bayes</abbr> projection carries each player's diet forward and
 shrinks his making toward the league mean in proportion to its sampling
 noise; its two fixed-weight corners are the natural baselines (weight 1 is
 naive carry-forward, weight 0 is diet-only). On both held-out season
 pairs, the <abbr title="Estimate the spread of true skill across the league from the data, then pull each individual's noisy estimate toward the league mean in proportion to its noise.">EB</abbr> rule beats naive carry-forward by 11.4% and 10.0% in mean
-absolute error — and beats both corners, meaning the gain comes precisely
+absolute error, and beats both corners, meaning the gain comes precisely
 from regressing the noisy component and only that component.</p>
-<figure class="figure-card"><iframe src="figures/fig5_eb_projection_py.html" loading="lazy" title="Eb projection"></iframe><figcaption>Observed <abbr title="Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.">shot-making</abbr> versus its <abbr title="Estimate the spread of true skill across the league from the data, then pull each individual's noisy estimate toward the league mean in proportion to its noise.">empirical-Bayes</abbr> posterior, sized by shot volume. The <abbr title="The fraction of an observed number that survives empirical-Bayes regression: 1 means fully trusted, 0 means replaced by the league mean.">shrinkage</abbr> rule made visible: high-volume shooters keep their number, small samples are pulled toward the league mean — and this picture is why the projection beats carrying raw numbers forward.</figcaption></figure>
+<figure class="figure-card"><iframe src="figures/fig5_eb_projection_py.html" loading="lazy" title="Eb projection"></iframe><figcaption>Observed <abbr title="Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.">shot-making</abbr> versus its <abbr title="Estimate the spread of true skill across the league from the data, then pull each individual's noisy estimate toward the league mean in proportion to its noise.">empirical-Bayes</abbr> posterior, sized by shot volume. The <abbr title="The fraction of an observed number that survives empirical-Bayes regression: 1 means fully trusted, 0 means replaced by the league mean.">shrinkage</abbr> rule made visible: high-volume shooters keep their number, small samples are pulled toward the league mean. This picture is why the projection beats carrying raw numbers forward.</figcaption></figure>
 <p>Finally, the same pipeline refit on the WNBA (with its own play-by-play
 gate) shows the deepest structural result: shot selection follows the
-rulebook. The WNBA's three-point line is nearly uniform — the corner
-discount that defines NBA geometry barely exists — and <abbr title="A three-pointer from the corner, where the NBA line is roughly 3 ft closer than the arc - the geometry discount that makes it the cheapest three.">corner threes</abbr> are
+rulebook. The WNBA's three-point line is nearly uniform (the corner
+discount that defines NBA geometry barely exists), and <abbr title="A three-pointer from the corner, where the NBA line is roughly 3 ft closer than the arc - the geometry discount that makes it the cheapest three.">corner threes</abbr> are
 12.9% of WNBA threes versus 25.5% in the NBA.</p>
-<figure class="figure-card"><iframe src="figures/fig4_wnba_shot_diet_py.html" loading="lazy" title="Wnba shot diet"></iframe><figcaption>NBA and WNBA shot diets side by side. Necessary because it shows shot selection is not a style preference: where the rulebook removes the <abbr title="A three-pointer from the corner, where the NBA line is roughly 3 ft closer than the arc - the geometry discount that makes it the cheapest three.">corner-three</abbr> geometry discount, the <abbr title="A three-pointer from the corner, where the NBA line is roughly 3 ft closer than the arc - the geometry discount that makes it the cheapest three.">corner-three</abbr> economy disappears with it. The persistence ordering (selection ≈ .80, making ≈ .66) also replicates in the WNBA — the finding is about basketball, not one league.</figcaption></figure>
+<figure class="figure-card"><iframe src="figures/fig4_wnba_shot_diet_py.html" loading="lazy" title="Wnba shot diet"></iframe><figcaption>NBA and WNBA shot diets side by side. Necessary because it shows shot selection is not a style preference: where the rulebook removes the <abbr title="A three-pointer from the corner, where the NBA line is roughly 3 ft closer than the arc - the geometry discount that makes it the cheapest three.">corner-three</abbr> geometry discount, the <abbr title="A three-pointer from the corner, where the NBA line is roughly 3 ft closer than the arc - the geometry discount that makes it the cheapest three.">corner-three</abbr> economy disappears with it. The persistence ordering (selection ≈ .80, making ≈ .66) also replicates in the WNBA: the finding is about basketball, not one league.</figcaption></figure>
 <p>What this study cannot claim, it says out loud: the public feed has no
-defender positions, so "selection" bundles openness with location — the
+defender positions, so "selection" bundles openness with location. The
 team-tracking versions of this model separate those, and this is the
 public-data ceiling.</p>
-<h2>Method, code, and verification</h2><p>The full technical write-up — data provenance, model specification, validation gates, and stated limitations — is the <a href="https://github.com/ismayc/shot-quality-study#readme">README</a>. The analysis is implemented independently in R and Python and reconciled to numeric tolerance; <code>run_checks.sh</code> replays every gate.</p>
+<h2>Method, code, and verification</h2><p>The full technical write-up (data provenance, model specification, validation gates, and stated limitations) is the <a href="https://github.com/ismayc/shot-quality-study#readme">README</a>. The analysis is implemented independently in R and Python and reconciled to numeric tolerance; <code>run_checks.sh</code> replays every gate.</p>
 </main>
 <footer>Public data · dual-implementation reconciled · every gate scripted ·
 <a href="https://github.com/ismayc/basketball-data-science">the family on GitHub</a></footer>

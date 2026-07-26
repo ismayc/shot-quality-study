@@ -40,14 +40,14 @@ def backtest_section() -> str:
 
     return f"""### Season-out backtest: two seasons the model never saw
 
-The limitation the first release stated — "in-sample calibration; a
-season-out backtest is the natural extension" — is now closed
+The limitation the first release stated ("in-sample calibration; a
+season-out backtest is the natural extension") is now closed
 (`python/06_backtest.py`). The 2023-24 model scores 2024-25 and 2025-26
 without refitting:
 
 - **Pricing transfers.** {seasons_line} (vs {ins['worst_decile_gap']:.3f}
   in-sample). League make rate is predicted within a fifth of a point both
-  seasons. Refit coefficients barely move — the largest drifts are the
+  seasons. Refit coefficients barely move: the largest drifts are the
   ~400-shot backcourt/heave terms; every substantive term is stable.
 - **The clock finding replicates.** The final-4s execution penalty is
   {rush_range[0]:+.1f} to {rush_range[1]:+.1f} per 100 across all three
@@ -65,7 +65,7 @@ half-repeats.** Among players with {300}+ FGA in consecutive seasons:
 (n = {p[('2023-24 to 2024-25', 'xpps')][1]} and
 {p[('2024-25 to 2025-26', 'xpps')][1]}.) A player's shot **diet** is close
 to a fixed trait (r ≈ 0.9); their conversion above expectation is roughly
-half signal (r ≈ 0.6). Raw PPS persists no better than making — the
+half signal (r ≈ 0.6). Raw PPS persists no better than making. The
 box-score efficiency number inherits all of making's noise. Projection
 implication: regress the making component hard, trust the diet.
 
@@ -99,7 +99,7 @@ def projection_section() -> str:
 The persistence table above says what to do; `python/08_projection.py` does
 it and measures it. Project next season's PPS as **this season's xPPS (the
 diet, r ≈ .9) plus this season's shot-making shrunk toward the league mean
-by its reliability** — normal-normal empirical Bayes, with each player's
+by its reliability**: normal-normal empirical Bayes, with each player's
 analytic SE and a method-of-moments estimate of the league's true-making
 spread (tau ≈ {tau_lo:.1f}-{tau_hi:.1f} pts/100; mean shrinkage weight
 {w_mean:.2f}, so even a full qualifying season keeps only about
@@ -112,7 +112,7 @@ everyone is naive carry-forward of raw PPS, weight 0 is diet-only.
 {rows}
 
 The EB rule beats naive carry-forward on both held-out season pairs and
-beats both fixed-weight corners — the improvement comes precisely from
+beats both fixed-weight corners: the improvement comes precisely from
 regressing the noisy component and only that component. This is the
 portfolio's projection loop closed: decomposition → persistence
 measurement → shrinkage rule → out-of-sample win.
@@ -140,7 +140,7 @@ def wnba_section() -> str:
         rr = reese.row(0, named=True)
         reese_line = (f" At the other pole, Angel Reese posts elite shot "
                       f"selection ({rr['xpps']:.2f} xPPS, all rim volume) "
-                      f"with {rr['making_100']:+.1f}/100 making — the model "
+                      f"with {rr['making_100']:+.1f}/100 making. The model "
                       f"quantifies exactly the debate her box score causes.")
 
     return f"""### WNBA: the identical pipeline on a league almost nobody models
@@ -152,7 +152,7 @@ gate. Three findings:
 - **The corner three is a rulebook artifact, visible from orbit.** In the
   NBA the corner line is ~3 ft closer than the arc, and corners are
   {nba['corner_share_of_3s']:.0%} of all threes. The WNBA's line is nearly
-  uniform (corner discount ~1 ft in the shot data) — and corner threes are
+  uniform (corner discount ~1 ft in the shot data), and corner threes are
   only {w25['corner_share_of_3s']:.0%} of threes. Where the geometry
   discount disappears, the corner economy disappears with it: shot
   selection follows the rulebook, not a style preference.
@@ -162,12 +162,12 @@ gate. Three findings:
   {w24['pct_three']:.1%} to {w25['pct_three']:.1%}. The league is tracing
   the NBA's 2015-2020 curve at roughly the same speed. Also structural:
   {nba['dunks_per_1000']:.0f} dunks per 1,000 NBA shots vs
-  {w25['dunks_per_1000']:.0f} in the WNBA — rim conversion differs
+  {w25['dunks_per_1000']:.0f} in the WNBA. Rim conversion differs
   ({nba['rim_make']:.0%} vs {w25['rim_make']:.0%}) for reasons the action
   mix makes visible.
 - **The persistence structure is league-invariant.** WNBA 2024→2025
   (n={pr['xpps'][1]}, {200}+ FGA): selection r = {pr['xpps'][0]:.2f},
-  making r = {pr['making_100'][0]:.2f} — the same ordering as the NBA
+  making r = {pr['making_100'][0]:.2f}, the same ordering as the NBA
   backtest. That makes "the diet is the trait, the making is half noise" a
   statement about basketball, not about one league.
 
@@ -193,14 +193,14 @@ schema serves {gl['n_shots']:,} G League shots for 2023-24
 (`python/05_gleague.py`). Two results:
 
 - **Shot selection is NOT the gap.** Priced by the NBA model, the G League's
-  shot mix is worth {gl['xpps_nba_model']:.3f} xPPS — marginally MORE than
+  shot mix is worth {gl['xpps_nba_model']:.3f} xPPS, marginally MORE than
   the NBA's own mix ({nba['xpps_nba_model']:.3f}); the G League actually
   takes more threes ({gl['pct_three']:.0%} vs {nba['pct_three']:.0%}) and
   more rim attempts ({gl['pct_rim']:.0%} vs {nba['pct_rim']:.0%}). The
   modern shot diet has fully propagated down.
 - **Execution is the whole gap**: actual G League conversion runs
   {gl['execution_gap_100']:+.1f} points per 100 shots below the NBA pricing
-  of the identical shots — a league-strength number that raw FG%
+  of the identical shots, a league-strength number that raw FG%
   comparisons can't isolate because the shot mixes differ. Transfer check:
   the NBA model's worst decile gap on G League shots is {worst:.3f}, so the
   shape of shot difficulty carries over; the level shifts.
@@ -242,7 +242,7 @@ tolerance before this is written.
 
 ### The model
 
-A logistic xMake model over all 218,701 field-goal attempts of 2023-24 —
+A logistic xMake model over all 218,701 field-goal attempts of 2023-24:
 shot zones, distance splines, rim angle, nine action families, family-specific
 distance slopes, and on-the-move modifiers; **no game-clock features**, which
 is what makes the clock analysis below a finding rather than a tautology.
@@ -260,14 +260,14 @@ that baseline. The two are different skills with different rosters:
 |---|---|---|---|---|---|
 {top_rows}
 
-Best shot *selection* is a different list entirely — rim-runners:
+Best shot *selection* is a different list entirely, rim-runners:
 {sel_names}. That separation (a Jokić makes hard shots; a Gafford takes easy
 ones) is the point of the decomposition, and neither raw FG% nor eFG% can
 see it.
 
 ### The end-of-period penalty, decomposed
 
-End-of-period shots are worse — but the model says **how** they are worse:
+End-of-period shots are worse, but the model says **how** they are worse:
 
 | Seconds left | n | actual PPS | xPPS | execution /100 |
 |---|---|---|---|---|
@@ -284,9 +284,9 @@ made less often). The old eFG-only view could not separate those two effects.
 ### The 2-for-1 window, re-tested with a real shot-quality model
 
 `../playbyplay-study` concluded the 2-for-1 adds a possession at no
-shot-quality cost — measured there with an eFG proxy. This model upgrades
+shot-quality cost, measured there with an eFG proxy. This model upgrades
 that claim: shots launched in the 25-36s window price at {tfo["xpps"]:.3f}
-xPPS vs {base["xpps"]:.3f} in normal play — a selection cost of only
+xPPS vs {base["xpps"]:.3f} in normal play, a selection cost of only
 {sel_cost_tfo:+.1f} points per 100 shots. The proxy's conclusion survives a
 model that actually prices each shot.
 
@@ -299,7 +299,7 @@ model that actually prices each shot.
   the backtest section; the backtest is score-only (no walk-forward
   refitting scheme), which is the next rung if this became a production
   metric.
-- Shot-making per 100 comes with the analytic SE shown — half the league's
+- Shot-making per 100 comes with the analytic SE shown: half the league's
   qualifying players sit within ±1 SE of zero, and claiming more precision
   than that would be exactly the overreach the other studies avoid.
 """
