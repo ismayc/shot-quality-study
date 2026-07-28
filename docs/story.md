@@ -9,10 +9,33 @@ distance, angle, and nine action families, with the game clock
 deliberately left out. Then it follows the consequences across three NBA
 seasons, the G League, and the WNBA.
 
+<div class="tiles">
+<div class="tile"><div class="label">Shots priced</div>
+<div class="value">218,701</div>
+<div class="sub">Every 2023-24 field-goal attempt, scored by a calibrated xMake model.</div></div>
+<div class="tile"><div class="label">What repeats</div>
+<div class="value">.91 <small>vs</small> .60</div>
+<div class="sub">Year-over-year correlation of shot selection versus shot-making.</div></div>
+<div class="tile"><div class="label">Projection gain</div>
+<div class="value">11.4<small>%</small></div>
+<div class="sub">EB rule's edge over naive carry-forward in mean absolute error (10.0% on the second season pair).</div></div>
+<div class="tile"><div class="label">Corner threes</div>
+<div class="value">25.5% &rarr; 12.9%</div>
+<div class="sub">Share of all threes, NBA versus WNBA. Shot selection follows the rulebook.</div></div>
+</div>
+
+<div class="eyebrow beat">The price check</div>
+
+## First, prove the prices are right
+
 Nothing downstream matters if the pricing is wrong, so the first figure is
 the least glamorous and most important one.
 
 {{fig:fig1_calibration_py|Predicted versus actual make rate by prediction decile. The license for everything else on this page: the model's prices match reality within a point at the worst decile, and the same calibration holds on two later seasons the model never saw (worst out-of-season gap 0.014). An uncalibrated pricer would make every following chart meaningless.}}
+
+<div class="eyebrow beat">Two skills</div>
+
+## Selection and making have different rosters
 
 With every shot priced, player skill splits cleanly in two. **Selection**
 (xPPS) is the value of the shots a player chooses; **making** is
@@ -25,6 +48,10 @@ this separates them.
 
 {{fig:fig2_selection_vs_making_py|Every qualifying player placed by shot selection (x) and shot-making (y). The figure that makes the decomposition concrete: the upper region is shot-makers, the right region is diet merchants, and the near-empty upper-right is the superstar corner. Two different skills, two different leaderboards, one chart.}}
 
+<div class="eyebrow beat">The clock</div>
+
+## Heaves are doubly bad. The 2-for-1 is nearly free.
+
 The model's most quotable tactical result comes from what was left out of
 it. Because the clock is not a feature, end-of-period effects appear in
 the residuals, where they decompose: final-four-second heaves are worse
@@ -33,6 +60,10 @@ shots (a further −22 per 100). The 2-for-1 launch window at 25–36
 seconds, meanwhile, costs almost nothing (~−0.8 per 100), upgrading the
 sibling play-by-play study's eFG-proxy finding with a real per-shot
 price.
+
+<div class="eyebrow beat">What repeats</div>
+
+## Trust the diet, regress the making
 
 Then comes the question that turns a descriptive model into a projection
 tool: **which of these skills repeats?** Each season is scored with its
@@ -53,6 +84,10 @@ absolute error, and beats both corners, meaning the gain comes precisely
 from regressing the noisy component and only that component.
 
 {{fig:fig5_eb_projection_py|Observed shot-making versus its empirical-Bayes posterior, sized by shot volume. The shrinkage rule made visible: high-volume shooters keep their number, small samples are pulled toward the league mean. This picture is why the projection beats carrying raw numbers forward.}}
+
+<div class="eyebrow beat">The rulebook test</div>
+
+## Shot selection follows the rulebook
 
 Finally, the same pipeline refit on the WNBA (with its own play-by-play
 gate) shows the deepest structural result: shot selection follows the
