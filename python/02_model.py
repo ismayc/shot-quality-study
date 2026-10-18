@@ -197,6 +197,18 @@ def clock_decomposition(df: pl.DataFrame) -> pl.DataFrame:
             .sort("bucket"))
 
 
+def shot_prices(df: pl.DataFrame) -> pl.DataFrame:
+    """Mean xPTS per attempt by action family, plus the long two (mid-range,
+    16+ ft): the "a dunk is worth about 1.8 points" prices the BRIEF quotes."""
+    fam = df.group_by("action_family").agg(n=pl.len(), xpts=pl.col("xpts").mean())
+    long_two = (df.filter((pl.col("SHOT_ZONE_BASIC") == "Mid-Range")
+                          & (pl.col("SHOT_DISTANCE") >= 16))
+                .select(pl.lit("long two (mid-range, 16+ ft)").alias("action_family"),
+                        pl.len().alias("n"), pl.col("xpts").mean().alias("xpts")))
+    return (pl.concat([fam, long_two.with_columns(pl.col("n").cast(fam["n"].dtype))])
+            .rename({"action_family": "shot"}).sort("shot"))
+
+
 def pbp_shot_totals(pbp_path: Path) -> dict[str, int]:
     """Independent cross-dataset check: FGA/FGM/3PM counted from the season
     play-by-play file (different upstream feed than ShotChartDetail)."""
@@ -245,6 +257,8 @@ def main() -> int:
 
     clock = clock_decomposition(shots)
     clock.write_csv(OUT / "clock_decomposition.csv")
+
+    shot_prices(shots).write_csv(OUT / "shot_prices.csv")
 
     # ---- validation gates ---------------------------------------------------
     totals = pbp_shot_totals(PBP_BULK)

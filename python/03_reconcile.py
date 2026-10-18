@@ -26,6 +26,7 @@ TABLES = [
      ["fga", "pts", "xpts", "pps", "xpps", "making_100", "making_100_se"], 1e-6),
     ("clock_decomposition.csv", "clock_decomposition_r.csv", ["bucket"],
      ["n", "pps", "xpps", "execution_100"], 1e-6),
+    ("shot_prices.csv", "shot_prices_r.csv", ["shot"], ["n", "xpts"], 1e-6),
 ]
 
 

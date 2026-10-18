@@ -101,9 +101,12 @@ def main() -> int:
     betas = {"2023-24": beta23}
     for season in HELD_OUT:
         betas[season] = m.logistic_irls(X[season], y[season])
+    # shots_<season>: attempts with a nonzero value in the term's design
+    # column, so a large drift can be read against how little data drives it
     drift = pl.DataFrame({
         "term": names,
         **{f"coef_{s}": betas[s] for s in SEASONS},
+        **{f"shots_{s}": (X[s] != 0).sum(axis=0) for s in SEASONS},
     }).with_columns(
         max_drift=pl.max_horizontal(
             (pl.col("coef_2024-25") - pl.col("coef_2023-24")).abs(),

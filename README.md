@@ -27,7 +27,7 @@ about sitting at that ceiling.
 > - **shrinkage weight**: The fraction of an observed number that survives empirical-Bayes regression: 1 means fully trusted, 0 means replaced by the league mean.
 > - **tau**: The estimated spread of true, noise-free skill across players (per 100 shots here); the knob that sets how hard empirical Bayes shrinks.
 > - **MAE**: Mean absolute error.
-> - **corner three**: A three-pointer from the corner, where the NBA line is roughly 3 ft closer than the arc - the geometry discount that makes it the cheapest three.
+> - **corner three**: A three-pointer from the corner, where the NBA line is about 1.75 ft closer than the arc (22 ft vs 23 ft 9 in) - the geometry discount that makes it the cheapest three.
 <!-- /terms -->
 
 ## Data
@@ -175,8 +175,9 @@ without refitting:
 
 - **Pricing transfers.** 2024-25: worst <abbr title="Split shots into ten bins by predicted make probability and compare predicted vs actual rates per bin; the reported number is the worst bin's gap.">decile</abbr> 0.014; 2025-26: worst <abbr title="Split shots into ten bins by predicted make probability and compare predicted vs actual rates per bin; the reported number is the worst bin's gap.">decile</abbr> 0.012 (vs 0.010
   in-sample). League make rate is predicted within a fifth of a point both
-  seasons. Refit coefficients barely move: the largest drifts are the
-  ~400-shot backcourt/heave terms; every substantive term is stable.
+  seasons. Refit coefficients barely move: the largest drifts are
+  `area_back_court` and `zone_backcourt`, terms with only 29-555 shots a season; every
+  substantive term is stable.
 - **The clock finding replicates.** The final-4s execution penalty is
   -23.3 to -20.4 per 100 across all three
   seasons fit independently; the <abbr title="Shooting early with 25-36 seconds left in a period so your team gets two possessions to the opponent's one before the buzzer.">2-for-1</abbr> window stays cheap in each.
@@ -227,10 +228,12 @@ measurement → <abbr title="The fraction of an observed number that survives em
 (the archive reaches back to 1997), with the same play-by-play cross-check
 gate. Three findings:
 
-- **The <abbr title="A three-pointer from the corner, where the NBA line is roughly 3 ft closer than the arc - the geometry discount that makes it the cheapest three.">corner three</abbr> is a rulebook artifact, visible from orbit.** In the
-  NBA the corner line is ~3 ft closer than the arc, and corners are
-  26% of all threes. The WNBA's line is nearly
-  uniform (corner discount ~1 ft in the shot data), and <abbr title="A three-pointer from the corner, where the NBA line is roughly 3 ft closer than the arc - the geometry discount that makes it the cheapest three.">corner threes</abbr> are
+- **The <abbr title="A three-pointer from the corner, where the NBA line is about 1.75 ft closer than the arc (22 ft vs 23 ft 9 in) - the geometry discount that makes it the cheapest three.">corner three</abbr> is a rulebook artifact, visible from orbit.** In the
+  NBA the corner line is 1.75 ft closer than the arc (22 ft vs 23 ft 9 in),
+  <abbr title="A three-pointer from the corner, where the NBA line is about 1.75 ft closer than the arc (22 ft vs 23 ft 9 in) - the geometry discount that makes it the cheapest three.">corner threes</abbr> are taken a median 3 ft closer than
+  arc threes, and corners are 26% of all threes.
+  The WNBA's line is nearly uniform (a median gap of
+  1 ft in the shot data), and <abbr title="A three-pointer from the corner, where the NBA line is about 1.75 ft closer than the arc (22 ft vs 23 ft 9 in) - the geometry discount that makes it the cheapest three.">corner threes</abbr> are
   only 13% of threes. Where the geometry
   discount disappears, the corner economy disappears with it: shot
   selection follows the rulebook, not a style preference.

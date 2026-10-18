@@ -39,6 +39,11 @@ def backtest_section() -> str:
     seasons_line = "; ".join(
         f"{r['season']}: worst decile {r['worst_decile_gap']:.3f}"
         for r in oos.iter_rows(named=True))
+    drift = pl.read_csv(OUT / "coefficient_drift.csv").sort("max_drift", descending=True)
+    top2 = drift.head(2)
+    shots = top2.select(pl.col("^shots_.*$")).to_numpy()
+    drift_terms = f"`{top2['term'][0]}` and `{top2['term'][1]}`"
+    drift_shots = f"{int(shots.min()):,}-{int(shots.max()):,}"
 
     return f"""### Season-out backtest: two seasons the model never saw
 
@@ -49,8 +54,9 @@ without refitting:
 
 - **Pricing transfers.** {seasons_line} (vs {ins['worst_decile_gap']:.3f}
   in-sample). League make rate is predicted within a fifth of a point both
-  seasons. Refit coefficients barely move: the largest drifts are the
-  ~400-shot backcourt/heave terms; every substantive term is stable.
+  seasons. Refit coefficients barely move: the largest drifts are
+  {drift_terms}, terms with only {drift_shots} shots a season; every
+  substantive term is stable.
 - **The clock finding replicates.** The final-4s execution penalty is
   {rush_range[0]:+.1f} to {rush_range[1]:+.1f} per 100 across all three
   seasons fit independently; the 2-for-1 window stays cheap in each.
@@ -152,9 +158,11 @@ def wnba_section() -> str:
 gate. Three findings:
 
 - **The corner three is a rulebook artifact, visible from orbit.** In the
-  NBA the corner line is ~3 ft closer than the arc, and corners are
-  {nba['corner_share_of_3s']:.0%} of all threes. The WNBA's line is nearly
-  uniform (corner discount ~1 ft in the shot data), and corner threes are
+  NBA the corner line is 1.75 ft closer than the arc (22 ft vs 23 ft 9 in),
+  corner threes are taken a median {nba['corner_gap_ft']:.0f} ft closer than
+  arc threes, and corners are {nba['corner_share_of_3s']:.0%} of all threes.
+  The WNBA's line is nearly uniform (a median gap of
+  {w25['corner_gap_ft']:.0f} ft in the shot data), and corner threes are
   only {w25['corner_share_of_3s']:.0%} of threes. Where the geometry
   discount disappears, the corner economy disappears with it: shot
   selection follows the rulebook, not a style preference.

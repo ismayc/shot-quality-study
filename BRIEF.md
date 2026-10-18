@@ -3,7 +3,7 @@
 ## For the front office
 
 Every shot last season has a fair price: a dunk is worth about 1.8 points
-before it leaves the hand, a contested long two about 0.8. Once you price
+before it leaves the hand, a long two about 0.8. Once you price
 every shot, player skill splits cleanly in two: **taking good shots** and
 **making shots at a rate the shot doesn't explain**. Those are different
 skills with different names on the leaderboards: the make-above-expected list
@@ -41,7 +41,7 @@ final-4s shots lose ~17 xPTS/100 to selection and a further ~22/100 to
 execution, the decomposition an eFG proxy can't do. qSQ/qSI lineage
 acknowledged; no defender distance in public data, and the study says so
 rather than pretending location is openness. Gates: cross-dataset totals vs
-the independent pbp feed (0.002%), decile calibration ≤0.01, league xPTS
+the independent pbp feed (≤0.003%), decile calibration ≤0.01, league xPTS
 ties out. The reconcile gate earned its keep again: it caught a dplyr
 sequential-summarise masking bug that silently degraded the SE column while
 every sum and ranking still matched. Extensions (Python-only, reusing the

@@ -36,6 +36,15 @@ player_table(shots) |>
   readr::write_csv(file.path(out, "player_table_r.csv"))
 clock_decomposition(shots) |>
   readr::write_csv(file.path(out, "clock_decomposition_r.csv"))
+# Mean xPTS by action family plus the long two (mid-range, 16+ ft).
+bind_rows(
+  shots |> group_by(shot = action_family) |>
+    summarise(n = n(), xpts = mean(xpts), .groups = "drop"),
+  shots |> filter(SHOT_ZONE_BASIC == "Mid-Range", SHOT_DISTANCE >= 16) |>
+    summarise(shot = "long two (mid-range, 16+ ft)", n = n(), xpts = mean(xpts))
+) |>
+  arrange(shot) |>
+  readr::write_csv(file.path(out, "shot_prices_r.csv"))
 
 # ---- figures (ggplot mirrors of the plotly versions) ------------------------
 fig <- file.path(root, "figures")

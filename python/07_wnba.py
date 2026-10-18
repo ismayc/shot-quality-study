@@ -83,6 +83,10 @@ def structure_row(league: str, df: pl.DataFrame) -> dict:
         "corner_share_of_3s": float(corner.height / three.height),
         "corner_3_make": float(corner["SHOT_MADE_FLAG"].mean()),
         "dunks_per_1000": float((df["action_family"] == "dunk").mean() * 1000),
+        # how much closer corner threes are taken than arc threes (median
+        # SHOT_DISTANCE, ft): the corner discount as shooters see it
+        "corner_gap_ft": float(three.filter(pl.col("SHOT_ZONE_BASIC") == "Above the Break 3")
+                               ["SHOT_DISTANCE"].median() - corner["SHOT_DISTANCE"].median()),
     }
 
 
