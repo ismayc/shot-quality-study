@@ -161,6 +161,21 @@ details.terms summary { padding: .55rem .9rem; cursor: pointer;
   color: var(--ink-2); font-weight: 600; }
 details.terms ul { margin: 0; padding: .2rem 1.4rem .8rem; }
 details.terms li { margin: .3rem 0; color: var(--ink-2); }
+/* sticky section nav (study pages): the masthead scrolls away, this stays */
+.sectionnav { position: sticky; top: 0; z-index: 30; background: var(--surface);
+  border-bottom: 1px solid var(--rule); }
+.sectionnav .inner { width: min(1200px, 94vw); margin: 0 auto; display: flex;
+  gap: 1.3rem; overflow-x: auto; white-space: nowrap; scrollbar-width: none;
+  padding: .55rem 0 .45rem; }
+.sectionnav .inner::-webkit-scrollbar { display: none; }
+.sectionnav a { font-family: "Barlow Condensed", system-ui, sans-serif;
+  font-weight: 500; font-size: .95rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-3); text-decoration: none;
+  padding-bottom: .15rem; border-bottom: 2px solid transparent; }
+.sectionnav a:hover { color: var(--ink); }
+.sectionnav a[aria-current="true"] { color: var(--accent-ink);
+  border-bottom-color: var(--accent); }
+main [id] { scroll-margin-top: 3.6rem; }
 /* hub cards */
 .cards { display: grid; grid-template-columns:
   repeat(auto-fit, minmax(290px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
@@ -209,6 +224,7 @@ html.reveal .is-in { opacity: 1; transform: none; }
   <a href="https://github.com/ismayc/shot-quality-study">Code on GitHub</a>
   <button class="themebtn" type="button" aria-label="Toggle color theme">◐</button>
 </div></header>
+<nav class="sectionnav" aria-label="Sections"><div class="inner"><a href="#the-price-check">The price check</a><a href="#two-skills">Two skills</a><a href="#the-clock">The clock</a><a href="#what-repeats">What repeats</a><a href="#the-rulebook-test">The rulebook test</a><a href="#method-code-and-verification">Method</a></div></nav>
 <main>
 <div class="eyebrow">218,701 shots (+ G League, + WNBA)</div>
 <h1>Pricing every shot, and finding out which shooting skills are real</h1>
@@ -236,13 +252,13 @@ seasons, the G League, and the WNBA.</p>
 <div class="sub">Share of all threes, NBA versus WNBA. Shot selection follows the rulebook.</div></div>
 </div>
 
-<div class="eyebrow beat">The price check</div>
+<div class="eyebrow beat" id="the-price-check">The price check</div>
 
 <h2>First, prove the prices are right</h2>
 <p>Nothing downstream matters if the pricing is wrong, so the first figure is
 the least glamorous and most important one.</p>
 <figure class="figure-card"><iframe src="figures/fig1_calibration_py.html" loading="lazy" style="height:516px" title="Calibration"></iframe><figcaption>Predicted versus actual make rate by prediction <abbr data-tip="Split shots into ten bins by predicted make probability and compare predicted vs actual rates per bin; the reported number is the worst bin's gap.">decile</abbr>. The license for everything else on this page: the model's prices match reality within a point at the worst <abbr data-tip="Split shots into ten bins by predicted make probability and compare predicted vs actual rates per bin; the reported number is the worst bin's gap.">decile</abbr>, and the same calibration holds on two later seasons the model never saw (worst out-of-season gap 0.014). An uncalibrated pricer would make every following chart meaningless.</figcaption></figure>
-<div class="eyebrow beat">Two skills</div>
+<div class="eyebrow beat" id="two-skills">Two skills</div>
 
 <h2>Selection and making have different rosters</h2>
 <p>With every shot priced, player skill splits cleanly in two. <strong>Selection</strong>
@@ -254,7 +270,7 @@ hard shots. The best-diet list is rim-runners like Gafford, whose value
 is standing in the right place. Box-score efficiency mixes the two;
 this separates them.</p>
 <figure class="figure-card"><iframe src="figures/fig2_selection_vs_making_py.html" loading="lazy" style="height:516px" title="Selection vs making"></iframe><figcaption>Every qualifying player placed by shot selection (x) and <abbr data-tip="Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.">shot-making</abbr> (y). The figure that makes the decomposition concrete: the upper region is shot-makers, the right region is diet merchants, and the near-empty upper-right is the superstar corner. Two different skills, two different leaderboards, one chart.</figcaption></figure>
-<div class="eyebrow beat">The clock</div>
+<div class="eyebrow beat" id="the-clock">The clock</div>
 
 <h2>Heaves are doubly bad. The <abbr data-tip="Shooting early with 25-36 seconds left in a period so your team gets two possessions to the opponent's one before the buzzer.">2-for-1</abbr> is nearly free.</h2>
 <p>The model's most quotable tactical result comes from what was left out of
@@ -265,7 +281,7 @@ shots (a further −22 per 100). The <abbr data-tip="Shooting early with 25-36 s
 seconds, meanwhile, costs almost nothing (~−0.8 per 100), upgrading the
 sibling <a href="https://ismayc.github.io/playbyplay-study/">play-by-play study</a>'s <abbr data-tip="Effective field-goal percentage: field-goal percentage with made threes counted 1.5x, putting twos and threes on one points scale.">eFG</abbr>-proxy finding with a real per-shot
 price.</p>
-<div class="eyebrow beat">What repeats</div>
+<div class="eyebrow beat" id="what-repeats">What repeats</div>
 
 <h2>Trust the diet, regress the making</h2>
 <p>Then comes the question that turns a descriptive model into a projection
@@ -284,7 +300,7 @@ pairs, the <abbr data-tip="Estimate the spread of true skill across the league f
 absolute error, and beats both corners, meaning the gain comes precisely
 from regressing the noisy component and only that component.</p>
 <figure class="figure-card"><iframe src="figures/fig5_eb_projection_py.html" loading="lazy" style="height:516px" title="Eb projection"></iframe><figcaption>Observed <abbr data-tip="Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.">shot-making</abbr> versus its <abbr data-tip="Estimate the spread of true skill across the league from the data, then pull each individual's noisy estimate toward the league mean in proportion to its noise.">empirical-Bayes</abbr> posterior, sized by shot volume. The <abbr data-tip="The fraction of an observed number that survives empirical-Bayes regression: 1 means fully trusted, 0 means replaced by the league mean.">shrinkage</abbr> rule made visible: high-volume shooters keep their number, small samples are pulled toward the league mean. This picture is why the projection beats carrying raw numbers forward.</figcaption></figure>
-<div class="eyebrow beat">The rulebook test</div>
+<div class="eyebrow beat" id="the-rulebook-test">The rulebook test</div>
 
 <h2>Shot selection follows the rulebook</h2>
 <p>Finally, the same pipeline refit on the WNBA (with its own play-by-play
@@ -297,7 +313,7 @@ discount that defines NBA geometry barely exists), and <abbr data-tip="A three-p
 defender positions, so "selection" bundles openness with location. The
 team-tracking versions of this model separate those, and this is the
 public-data ceiling.</p>
-<h2>Method, code, and verification</h2><p>The full technical write-up (data provenance, model specification, validation gates, and stated limitations) is the <a href="https://github.com/ismayc/shot-quality-study#readme">README</a>. The analysis is implemented independently in R and Python and reconciled to numeric tolerance; <code>run_checks.sh</code> replays every gate.</p>
+<h2 id="method-code-and-verification">Method, code, and verification</h2><p>The full technical write-up (data provenance, model specification, validation gates, and stated limitations) is the <a href="https://github.com/ismayc/shot-quality-study#readme">README</a>. The analysis is implemented independently in R and Python and reconciled to numeric tolerance; <code>run_checks.sh</code> replays every gate.</p>
 </main>
 <footer>Public data · dual-implementation reconciled · every gate scripted ·
 <a href="https://github.com/ismayc/basketball-data-science">the family on GitHub</a></footer>
@@ -355,6 +371,46 @@ public-data ceiling.</p>
   }, {threshold: 0.08, rootMargin: "0px 0px -6% 0px"});
   Array.prototype.forEach.call(els, function (el) { io.observe(el); });
   window.__revealReady = true;
+})();
+</script>
+<script>
+(function () {
+  var nav = document.querySelector(".sectionnav");
+  if (!nav) { return; }
+  var links = Array.prototype.slice.call(nav.querySelectorAll("a"));
+  var row = nav.querySelector(".inner");
+  var targets = links.map(function (a) {
+    return document.getElementById(a.getAttribute("href").slice(1));
+  });
+  var last = null;
+  function update() {
+    var edge = nav.getBoundingClientRect().bottom + 24, cur = -1;
+    targets.forEach(function (t, i) {
+      if (t && t.getBoundingClientRect().top <= edge) { cur = i; }
+    });
+    // At the foot of the page the last sections are too short to reach the
+    // bar, so the final one counts as current there.
+    var de = document.documentElement;
+    if (window.scrollY + window.innerHeight >= de.scrollHeight - 2) { cur = targets.length - 1; }
+    if (cur === last) { return; }
+    last = cur;
+    links.forEach(function (a, i) {
+      if (i === cur) { a.setAttribute("aria-current", "true"); }
+      else { a.removeAttribute("aria-current"); }
+    });
+    var a = links[cur];
+    if (a && row) {
+      var l = a.offsetLeft, r = l + a.offsetWidth;
+      if (l < row.scrollLeft || r > row.scrollLeft + row.clientWidth) {
+        row.scrollLeft = Math.max(0, l - 16);
+      }
+    }
+  }
+  // Straight from the event, not via requestAnimationFrame, which stalls in
+  // background tabs and offscreen frames; eight rect reads per scroll is cheap.
+  window.addEventListener("scroll", update, {passive: true});
+  window.addEventListener("resize", update);
+  update();
 })();
 </script>
 </body>
