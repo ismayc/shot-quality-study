@@ -36,6 +36,7 @@ about sitting at that ceiling.
 |---|---|---|
 | [shufinskiy/nba_data](https://github.com/shufinskiy/nba_data) `shotdetail_2023` | every ShotChartDetail row of 2023-24: x/y location, zone, action type, clock, make/miss | 218,701 shots |
 | `../lineup-valuation-study/data/pbp_bulk/nbastats_2023.csv` (sibling checkout) | independent play-by-play feed | cross-dataset validation only |
+| `../playbyplay-study/data/raw_pbp/` (sibling checkout) | `PlayByPlayV3` field-goal events, NBA 2023-24 to 2025-26 and WNBA 2024 and 2025 | per-shot source check only |
 
 One bulk download (`python/01_harvest_shots.py`), no per-game API calls.
 
@@ -67,6 +68,8 @@ python/06_backtest.py        season-out backtest on 2024-25 and 2025-26 +
                              skill-persistence analysis (selection vs making)
 python/07_wnba.py            the identical pipeline refit on WNBA 2024/2025
                              (archive reaches 1997); corner-economy finding
+python/09_check_sources.py   every shot joined to the play-by-play's own shot
+                             event; gates on agreement, lists every disagreement
 ```
 
 `01_harvest_shots.py` takes dataset names (`shotdetail_2024`,
@@ -76,6 +79,22 @@ archive is one argument away.
 Validation gates (in `output/validation.csv`): attempt/make/3PM totals match
 the independent play-by-play feed to 0.2%; <abbr title="Split shots into ten bins by predicted make probability and compare predicted vs actual rates per bin; the reported number is the worst bin's gap.">decile calibration</abbr> within 0.01;
 league mean <abbr title="Expected points: the modeled make probability times the shot's point value, summed over attempts.">xPTS</abbr> ties out against actual points.
+
+**Per-shot source check** (`python/09_check_sources.py`, added October 19,
+2026). The reconcile gate compares two implementations reading the same
+file, so it cannot see an error in the file itself. This check joins every
+shot in five league-seasons to the matching field-goal event in the
+`PlayByPlayV3` feed (by game and event number) and requires the two feeds to
+cover the same games, to agree on make/miss, shot value, and period for
+every matched shot, and to agree on player, court location, and clock for
+nearly all of them. Per-season results are in `output/source_check.csv`, and
+every disagreeing or unmatched shot is listed in
+`output/source_disagreements.csv`. Limits: the two feeds share the NBA's
+tracking coordinates, so location agreement rules out transport and join
+errors, not measurement error; and for some seasons the play-by-play copy
+comes from the same archive producer as these shot files (the table's
+`v3_games_from_api` column says how much of each season came straight from
+the API).
 
 **What the reconcile gate caught this time:** the first R implementation
 computed the <abbr title="Actual minus expected points per 100 shots: conversion above or below what the shot diet itself explains. Positive means making shots the model prices as hard.">shot-making</abbr> SE from `sd(points - xpts)` *after* dplyr's
