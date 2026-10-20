@@ -46,6 +46,8 @@ hard shots. The best-diet list is rim-runners like Gafford, whose value
 is standing in the right place. Box-score efficiency mixes the two;
 this separates them.
 
+{{svg:dg1_two_skills|How the decomposition works. The model prices every shot from where and how it was taken; a player's points per shot then split into selection (the price of the shots he takes, against the league average) and making (what he scores above that price). Jokić takes slightly cheaper shots than average and makes far more of them than their price says. Gobert takes the most valuable diet of any qualifying player and scores slightly below its price.}}
+
 {{fig:fig2_selection_vs_making_py|Every qualifying player placed by shot selection (x) and shot-making (y). The figure that makes the decomposition concrete: the upper region is shot-makers, the right region is diet merchants, and the near-empty upper-right is the superstar corner. Two different skills, two different leaderboards, one chart.}}
 
 <div class="eyebrow beat">The clock</div>
@@ -61,6 +63,8 @@ seconds, meanwhile, costs almost nothing (~−0.8 per 100), upgrading the
 sibling play-by-play study's eFG-proxy finding with a real per-shot
 price.
 
+{{svg:dg3_clock_split|End-of-period shots measured against normal play in two steps: selection (are the shots cheaper?) and execution (do they go in less often than their price?). In the final four seconds both steps drop. In the 2-for-1 window the selection step is close to zero, which is the near-free part; its shots still convert below their price, by about as much as other late-clock shots.}}
+
 <div class="eyebrow beat">What repeats</div>
 
 ## Trust the diet, regress the making
@@ -74,7 +78,7 @@ because box-score efficiency inherits all of making's noise.
 
 {{fig:fig3_persistence_py|Shot-making in 2023-24 versus 2024-25, player by player. The study's most consequential scatter: the cloud is wide because making only half-repeats (r ≈ .60), while the equivalent selection plot is a tight diagonal (r ≈ .91). This single contrast dictates the projection rule: trust the diet, regress the making.}}
 
-The persistence finding earns its keep by becoming a rule.
+The persistence finding then becomes a rule.
 An empirical-Bayes projection carries each player's diet forward and
 shrinks his making toward the league mean in proportion to its sampling
 noise; its two fixed-weight corners are the natural baselines (weight 1 is
@@ -82,6 +86,8 @@ naive carry-forward, weight 0 is diet-only). On both held-out season
 pairs, the EB rule beats naive carry-forward by 11.4% and 10.0% in mean
 absolute error, and beats both corners, meaning the gain comes precisely
 from regressing the noisy component and only that component.
+
+{{svg:dg2_trust_diet|From what repeats to the projection rule. Because selection repeats almost fully and making only about half, the rule carries a player's diet forward whole and pulls his making toward the league mean in proportion to its noise. Jokić and Kennard both posted high making numbers; with far more shots behind his, Jokić keeps most of it, while Kennard keeps less than half.}}
 
 {{fig:fig5_eb_projection_py|Observed shot-making versus its empirical-Bayes posterior, sized by shot volume. The shrinkage rule made visible: high-volume shooters keep their number, small samples are pulled toward the league mean. This picture is why the projection beats carrying raw numbers forward.}}
 
@@ -94,6 +100,8 @@ gate) shows the deepest structural result: shot selection follows the
 rulebook. The WNBA's three-point line is nearly uniform (the corner
 discount that defines NBA geometry barely exists), and corner threes are
 12.9% of WNBA threes versus 25.5% in the NBA.
+
+{{svg:dg4_corner_courts|Why the corner economy is a rulebook effect. In the NBA the three-point line runs straight along each sideline, closer to the basket than the arc, and corner threes are taken from there. The WNBA line sits at nearly the same distance all the way round, and its corner share of threes is about half the NBA's.}}
 
 {{fig:fig4_wnba_shot_diet_py|NBA and WNBA shot diets side by side. Necessary because it shows shot selection is not a style preference: where the rulebook removes the corner-three geometry discount, the corner-three economy disappears with it. The persistence ordering (selection ≈ .80, making ≈ .66) also replicates in the WNBA: the finding is about basketball, not one league.}}
 

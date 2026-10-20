@@ -23,3 +23,7 @@ $PY python/09_check_sources.py --check | tail -1
 echo
 echo "=== findings: README Findings regenerate from outputs ==="
 $PY python/04_findings.py --check | tail -1
+
+echo
+echo "=== diagrams: committed SVGs rebuild from outputs ==="
+$PY python/10_diagrams.py --check | tail -1
